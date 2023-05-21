@@ -2,6 +2,7 @@
       import * as THREE from "/assets/js/three.module.js";
       import { OrbitControls } from "/assets/js/OrbitControls.js";
       import { GLTFLoader } from "/assets/js/GLTFLoader.js";
+      import { FBXLoader } from "https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js";
       import { OBJLoader } from "/assets/js/OBJLoader.js";
       import { MTLLoader } from "/assets/js/MTLLoader.js";
 
@@ -187,6 +188,7 @@
 
       };
 
+      let animationMixer = [];
       // geometry
       const geometry = new THREE.BufferGeometry();
 
@@ -241,14 +243,14 @@
 
       window.addEventListener('resize', resize);
 
-      const loaderGLTF = new GLTFLoader();
+      /*const loaderGLTF = new GLTFLoader();
       loaderGLTF.load("assets/GLTFmodels/scene.gltf",
           function(gltf) {
               //console.log(gltg);
               const obj = gltf.scene;
               scene.add(obj);
           }
-      );
+      );*/
 
       const Bote = new GLTFLoader();
       Bote.load("assets/GLTFmodels/Bote.gltf",
@@ -295,14 +297,14 @@
           }
       );
 
-      const TC = new GLTFLoader();
+      /*const TC = new GLTFLoader();
       TC.load("assets/GLTFmodels/Torre_Central.gltf",
           function(gltf_TC) {
               //console.log(gltg);
               const EdiTC = gltf_TC.scene;
               scene.add(EdiTC);
           }
-      );
+      );*/
 
       const CyPu = new GLTFLoader();
       CyPu.load("assets/GLTFmodels/CyPu_Assets.gltf",
@@ -357,6 +359,51 @@
             }); */
 
       //animar
+      // ****************************************FBX*************************************************
+      var Test;
+      let fbx;
+
+      function loadAnimatedModelAndPlay() {
+          const loader = new FBXLoader();
+          loader.setPath("assets/FBXmodels/");
+          loader.load("Hex.fbx", (loadedfbx) => {
+              fbx = loadedfbx;
+              fbx.scale.setScalar(0.1);
+              fbx.traverse((c) => {
+                  c.castShadow = true;
+              });
+              fbx.position.copy(new THREE.Vector3(-57, 0, 0));
+
+              // Crear la caja de colisión para el modelo animado
+              /*Test = new THREE.BoxGeometry().setFromObject(fbx);
+
+              const animLoader = new FBXLoader();
+              animLoader.setPath("assets/FBXmodels/");
+              animLoader.load("Hex.fbx", (anim) => {
+                  const mixer = new THREE.AnimationMixer(fbx);
+                  animationMixer.push(mixer);
+                  const idleAction = mixer.clipAction(anim.animations[0]);
+                  idleAction.play();*/
+
+              //checkCollisions();
+              //animate();
+          });
+
+          scene.add(fbx);
+          // cityScene.add(fbx);
+          // ****************************************FBX*************************************************
+
+
+          //checkCollisions();
+          //  });
+      }
+
+
+
+
+
+
+
       function animate() {
           //cube2BB.copy(cube2.geometry.boundingBox).applyMatrix4(cube2.matrixWorld); //Copia la geometría con el matrix4. 
 
@@ -394,3 +441,4 @@
           }
       }
       animate();
+      loadAnimatedModelAndPlay();
