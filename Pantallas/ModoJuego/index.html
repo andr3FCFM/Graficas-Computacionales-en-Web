@@ -107,6 +107,7 @@ function startGame() {
        else{
             if (myGameArea.context.isPointInPath(colnieve, event.offsetX, event.offsetY)){
                 myGameArea.naux = 2;
+                
             }
             else{
                 if (myGameArea.context.isPointInPath(collava, event.offsetX, event.offsetY)){
@@ -179,6 +180,11 @@ function startGame() {
        if (myGameArea.context.isPointInPath(coldificil, event.offsetX, event.offsetY)){
             myGameArea.dificultad = 2;
        }
+
+            if(myGameArea.nivel == 1)
+            {
+                location.href = "../Menu/index.html";
+            }
    });     
 }
 
