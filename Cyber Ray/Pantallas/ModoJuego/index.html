@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body onload="startGame()">
+    <script>
+        var btnJugar;
+        var myCuadro;
+        var btnRegresar;
+        var myBackground;
+        var myTitulo;
+        var imgMapa_01;
+        var mapa_01;
+        var imgMapa_02;
+        var mapa_02;
+        var imgMapa_03;
+        var mapa_03;
+        var imgselect;
+        var mododejuego;
+        var unjugador;
+        var multijugador;
+        var dificultad;
+        var facil;
+        var dificil;
+        var linea;
+
+        function startGame() {
+
+            btnJugar = new component(200, 70, "../Botones/btnjugar.png", 400, 530, "btn");
+            const colJugar = new Path2D();
+            colJugar.rect(405, 520, 188, 75);
+
+            btnRegresar = new component(200, 70, "../Botones/btnvolver.png", 750, 530, "btn");
+            const colRegresar = new Path2D();
+            colRegresar.rect(753, 520, 188, 75);
+
+            myBackground = new component(1350, 640, "../Img/Space_3.jpg", 0, 0, "background");
+            myTitulo = new component(500, 80, "../Img/sel_lvl.png", 420, 0, "image");
+            myCuadro = new component(1400, 535, "../Img/cuadro.png", -35, -30, "cuadro");
+
+            imgselect = new component(284, 268, "../Img/imgselect.png", 80, 100, "select");
+
+            imgMapa_01 = new component(264, 248, "../Img_Mapa/Mapa_1.png", 90, 110, "image");
+            const coldesierto = new Path2D();
+            coldesierto.rect(90, 110, 264, 248);
+            mapa_01 = new component(150, 50, "../Img/mapa01.png", 145, 365, "image");
+
+            imgMapa_02 = new component(264, 248, "../botones/placeholder.png", 540, 110, "image");
+            const colnieve = new Path2D();
+            colnieve.rect(540, 110, 264, 248);
+            mapa_02 = new component(150, 50, "../Img/mapa02.png", 600, 365, "image");
+
+            imgMapa_03 = new component(264, 248, "../botones/placeholder.png", 970, 110, "image");
+            const collava = new Path2D();
+            collava.rect(970, 110, 264, 248);
+            mapa_03 = new component(150, 50, "../Img/mapa03.png", 1050, 365, "image");
+
+            linea = new component(170, 5, "../Img/linea.png", 250, 487, "linea");
+
+            mododejuego = new component(270, 50, "../Img/mododejuego.png", 315, 405, "image");
+            unjugador = new component(180, 38, "../Img/mododejuego.png", 245, 455, "image");
+            const colunjugador = new Path2D();
+            colunjugador.rect(255, 460, 160, 25);
+
+            multijugador = new component(180, 40, "../Img/multijugador.png", 465, 455, "image");
+            const colmultijugador = new Path2D();
+            colmultijugador.rect(470, 460, 165, 25);
+
+            dificultad = new component(200, 50, "../Img/dificultad.png", 795, 405, "image");
+            facil = new component(110, 40, "../Img/facil.png", 775, 455, "image");
+            const colfacil = new Path2D();
+            colfacil.rect(785, 460, 80, 25);
+
+            dificil = new component(110, 35, "../Img/dificil.png", 915, 455, "image");
+            const coldificil = new Path2D();
+            coldificil.rect(915, 460, 110, 25);
+
+            myGameArea.start();
+
+            myGameArea.canvas.addEventListener('mousemove', function(event) {
+                //btnJugar
+                if (myGameArea.context.isPointInPath(colJugar, event.offsetX, event.offsetY)) {
+                    btnJugar.anima = 1;
+                } else {
+                    btnJugar.anima = 0;
+                }
+                //btnRegresar
+                if (myGameArea.context.isPointInPath(colRegresar, event.offsetX, event.offsetY)) {
+                    btnRegresar.anima = 1;
+                } else {
+                    btnRegresar.anima = 0;
+                }
+                //nivel
+                if (myGameArea.context.isPointInPath(coldesierto, event.offsetX, event.offsetY)) {
+                    myGameArea.naux = 1;
+                } else {
+                    if (myGameArea.context.isPointInPath(colnieve, event.offsetX, event.offsetY)) {
+                        myGameArea.naux = 2;
+
+                    } else {
+                        if (myGameArea.context.isPointInPath(collava, event.offsetX, event.offsetY)) {
+                            myGameArea.naux = 3;
+                        } else {
+                            myGameArea.naux = 0;
+                        }
+                    }
+                }
+                if (myGameArea.context.isPointInPath(colunjugador, event.offsetX, event.offsetY)) {
+                    myGameArea.maux = 1;
+                } else {
+                    if (myGameArea.context.isPointInPath(colmultijugador, event.offsetX, event.offsetY)) {
+                        myGameArea.maux = 2;
+                    } else {
+                        myGameArea.maux = 0;
+                    }
+                }
+                if (myGameArea.context.isPointInPath(colfacil, event.offsetX, event.offsetY)) {
+                    myGameArea.daux = 1;
+                } else {
+                    if (myGameArea.context.isPointInPath(coldificil, event.offsetX, event.offsetY)) {
+                        myGameArea.daux = 2;
+                    } else {
+                        myGameArea.daux = 0;
+                    }
+                }
+
+            });
+
+            myGameArea.canvas.addEventListener('click', function(event) {
+                //btnJugar
+                if (myGameArea.context.isPointInPath(colJugar, event.offsetX, event.offsetY)) {
+                    location.href = "./Cyber Ray/Mapa_1.html";
+                }
+                //btnRegresar
+                if (myGameArea.context.isPointInPath(colRegresar, event.offsetX, event.offsetY)) {
+                    location.href = "";
+                }
+                //Mapa_1
+                if (myGameArea.context.isPointInPath(coldesierto, event.offsetX, event.offsetY)) {
+                    myGameArea.nivel = 1;
+                }
+                //Mapa_2
+                if (myGameArea.context.isPointInPath(colnieve, event.offsetX, event.offsetY)) {
+                    myGameArea.nivel = 2;
+                }
+                //Mapa_3
+                if (myGameArea.context.isPointInPath(collava, event.offsetX, event.offsetY)) {
+                    myGameArea.nivel = 3;
+                }
+                //unjugador
+                if (myGameArea.context.isPointInPath(colunjugador, event.offsetX, event.offsetY)) {
+                    myGameArea.modo = 1;
+                }
+                //multijugador
+                if (myGameArea.context.isPointInPath(colmultijugador, event.offsetX, event.offsetY)) {
+                    myGameArea.modo = 2;
+                }
+                //unjugador
+                if (myGameArea.context.isPointInPath(colfacil, event.offsetX, event.offsetY)) {
+                    myGameArea.dificultad = 1;
+                }
+                //multijugador
+                if (myGameArea.context.isPointInPath(coldificil, event.offsetX, event.offsetY)) {
+                    myGameArea.dificultad = 2;
+                }
+
+                if (myGameArea.nivel == 1) {
+                    location.href = "/../Mapa_1.html";
+                }
+
+                if (myGameArea.nivel == 2) {
+                    location.href = "/../Mapa_2.html";
+                }
+
+                if (myGameArea.nivel == 3) {
+                    location.href = "/../Mapa_3.html";
+                }
+            });
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function() {
+                this.naux = 0;
+                this.nivel = 1;
+                this.maux = 0;
+                this.modo = 1;
+                this.daux = 0;
+                this.dificultad = 1;
+                this.canvas.width = 1340;
+                this.canvas.height = 603;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0;
+                this.interval = setInterval(updateGameArea, 20);
+            },
+            clear: function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            },
+            stop: function() {
+                clearInterval(this.interval);
+            }
+        }
+
+        function component(width, height, color, x, y, type) {
+            this.type = type;
+            if (type == "image" || type == "background" || type == "btn" || type == "select" || type == "cuadro" || type == "linea") {
+                this.image = new Image();
+                this.image.src = color;
+            }
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+            this.anima = 0;
+            /*this.animate = function() {
+                ctx = myGameArea.context;
+                if(type == "btn"){
+                    ctx.drawImage(this.image, 
+                        this.x - 30, 
+                        this.y - 30,
+                        this.width * 1.2, this.height * 1.2);
+                }
+            }*/
+            this.update = function() {
+                ctx = myGameArea.context;
+                if (type == "image" || type == "background" || type == "btn" || type == "select" || type == "cuadro" || type == "linea") {
+                    if (type == "image") {
+                        ctx.drawImage(this.image,
+                            this.x,
+                            this.y,
+                            this.width, this.height);
+                    }
+                    if (type == "background") {
+                        ctx.drawImage(this.image,
+                            this.x,
+                            this.y,
+                            this.width, this.height);
+                    }
+                    if (type == "cuadro") {
+                        ctx.drawImage(this.image,
+                            this.x,
+                            this.y,
+                            this.width, this.height);
+                    }
+                    if (type == "btn") {
+                        if (this.anima == 0) {
+                            ctx.drawImage(this.image,
+                                this.x,
+                                this.y,
+                                this.width, this.height);
+                        } else {
+                            ctx.drawImage(this.image,
+                                this.x - 18,
+                                this.y - 10,
+                                this.width * 1.2, this.height * 1.2);
+                        }
+                    }
+                    if (type == "select") {
+                        if (myGameArea.naux == 0 || myGameArea.nivel == 0) {
+                            ctx.drawImage(this.image,
+                                this.x - 1000,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.naux == 1 || myGameArea.nivel == 1) {
+                            ctx.drawImage(this.image,
+                                this.x,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.naux == 2 || myGameArea.nivel == 2) {
+                            ctx.drawImage(this.image,
+                                this.x + 450,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.naux == 3 || myGameArea.nivel == 3) {
+                            ctx.drawImage(this.image,
+                                this.x + 880,
+                                this.y,
+                                this.width, this.height);
+                        }
+                    }
+                    if (type == "linea") {
+                        if (myGameArea.maux == 0 || myGameArea.modo == 0) {
+                            ctx.drawImage(this.image,
+                                this.x - 1000,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.maux == 1 || myGameArea.modo == 1) {
+                            ctx.drawImage(this.image,
+                                this.x,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.maux == 2 || myGameArea.modo == 2) {
+                            ctx.drawImage(this.image,
+                                this.x + 220,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.daux == 0 || myGameArea.dificultad == 0) {
+                            ctx.drawImage(this.image,
+                                this.x - 1000,
+                                this.y,
+                                this.width, this.height);
+                        }
+                        if (myGameArea.daux == 1 || myGameArea.dificultad == 1) {
+                            ctx.drawImage(this.image,
+                                this.x + 532,
+                                this.y,
+                                this.width - 80, this.height);
+                        }
+                        if (myGameArea.daux == 2 || myGameArea.dificultad == 2) {
+                            ctx.drawImage(this.image,
+                                this.x + 673,
+                                this.y,
+                                this.width - 70, this.height);
+                        }
+                    }
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            }
+            this.newPos = function() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.type == "background") {
+                    if (this.x == -(this.width)) {
+                        this.x = 0;
+                    }
+                }
+            }
+        }
+
+        function updateGameArea() {
+            myGameArea.clear();
+            myBackground.newPos();
+            myBackground.update();
+            myTitulo.newPos();
+            myTitulo.update();
+            myCuadro.newPos();
+            myCuadro.update();
+            imgselect.newPos()
+            imgselect.update();
+            imgMapa_01.newPos();
+            imgMapa_01.update();
+            mapa_01.newPos();
+            mapa_01.update();
+            imgMapa_02.newPos();
+            imgMapa_02.update();
+            mapa_02.newPos();
+            mapa_02.update();
+            imgMapa_03.newPos();
+            imgMapa_03.update();
+            mapa_03.newPos();
+            mapa_03.update();
+            mododejuego.newPos();
+            mododejuego.update();
+            linea.newPos();
+            linea.update();
+            unjugador.newPos();
+            unjugador.update();
+            multijugador.newPos();
+            multijugador.update();
+            dificultad.newPos();
+            dificultad.update();
+            facil.newPos();
+            facil.update();
+            dificil.newPos();
+            dificil.update();
+            btnJugar.newPos();
+            btnJugar.update();
+            btnRegresar.newPos();
+            btnRegresar.update();
+        }
+    </script>
+</body>
+
+</html>
