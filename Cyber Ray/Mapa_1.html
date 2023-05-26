@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cubo</title>
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body onload="iniciarCronometro()">
+    <div class="w3-container">
+        <button id="button-login">Login</button>
+        <button id="button-logout">Logout</button>
+        <div class="w3-light-grey">
+            <div class="w3-green" style="height:30px;width:100%" id="barraVidaCSS"></div>
+        </div>
+    </div>
+
+    <h1>Tiempo de partida</h1>
+
+    <div id="cronometro">00:00</div>
+    <script>
+        var cronometro;
+        var minutos = 0;
+        var segundos = 0;
+
+        function iniciarCronometro() {
+            cronometro = setInterval(actualizarCronometro, 1000);
+        }
+
+        function detenerCronometro() {
+            clearInterval(cronometro);
+        }
+
+        function actualizarCronometro() {
+            segundos++;
+
+            if (segundos === 60) {
+                minutos++;
+                segundos = 0;
+            }
+
+            actualizarTextoCronometro();
+        }
+
+        function actualizarTextoCronometro() {
+            var textoCronometro = pad(minutos) + ":" + pad(segundos);
+            document.getElementById("cronometro").textContent = textoCronometro;
+        }
+
+        function pad(valor) {
+            return valor < 10 ? "0" + valor : valor;
+        }
+    </script>
+    <script type="module" src="assets/js/controller.js"></script>
+</body>
+
+</html>
